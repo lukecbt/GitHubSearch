@@ -1,0 +1,10 @@
+C:\Projects\GithubSearch\GitHubSearch.ApplicationCore\bin\Debug\GitHubSearch.ApplicationCore.dll
+C:\Projects\GithubSearch\GitHubSearch.ApplicationCore\bin\Debug\GitHubSearch.ApplicationCore.pdb
+C:\Projects\GithubSearch\GitHubSearch.ApplicationCore\bin\Debug\Newtonsoft.Json.dll
+C:\Projects\GithubSearch\GitHubSearch.ApplicationCore\bin\Debug\RestSharp.dll
+C:\Projects\GithubSearch\GitHubSearch.ApplicationCore\bin\Debug\Newtonsoft.Json.xml
+C:\Projects\GithubSearch\GitHubSearch.ApplicationCore\bin\Debug\RestSharp.xml
+C:\Projects\GithubSearch\GitHubSearch.ApplicationCore\obj\Debug\GitHubSearch.ApplicationCore.csproj.CoreCompileInputs.cache
+C:\Projects\GithubSearch\GitHubSearch.ApplicationCore\obj\Debug\GitHubSearch.ApplicationCore.csproj.CopyComplete
+C:\Projects\GithubSearch\GitHubSearch.ApplicationCore\obj\Debug\GitHubSearch.ApplicationCore.dll
+C:\Projects\GithubSearch\GitHubSearch.ApplicationCore\obj\Debug\GitHubSearch.ApplicationCore.pdb

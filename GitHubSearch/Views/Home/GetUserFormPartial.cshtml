@@ -1,0 +1,24 @@
+﻿@model GitHubSearch.Models.GetUserFormModel
+@{
+    using (Html.BeginForm("GetUser", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <div class="form-group">
+                    <div style="display: inline-block;">
+                        @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Github username..." })
+                        @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div>
+                        <input type="submit" value="Search" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

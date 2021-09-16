@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1 class="text-center" style="color: teal">Github Search</h1>
+    <p class="lead">This project is a Github search portal which uses the MVC pattern using ASP.NET and C#. I opted for a clean architecture for this project. Unit tests have also been added which include Moq as my mocking framework of choice.</p>
+    <p class="lead">Type in any Github username to access their basic account info and get a list of their top repositories based on stargazers.</p>
+    <p class="lead">This is an ongoing project with a few things in the works such as:-</p>
+    <ul>
+        <li>JavaScript Framework front-end (React or Vue)</li>
+        <li>Implement custom CSS</li>
+        <li>Additional external Github API support</li>
+        <li>Recreate in ASP.NET Core</li>
+    </ul>
+    <p class="text-center"><a href="https://github.com/lukecbt" target="_blank" class="text-center btn btn-default btn-lg">My Github</a></p>
+</div>
+
+<div class="row">
+
+    <div class="col-xs-12">
+        @Html.Action("RenderForm")
+    </div>
+
+    @if (Convert.ToBoolean(TempData["Submitted"]))
+    {
+        @model GitHubSearch.ApplicationCore.Models.GenericResult<GitHubSearch.ApplicationCore.Models.GitHubUser>
+        if (Model.Item != null)
+        {
+            <div style="text-align:center;">
+                <h4>Searching user: @Model.Item.Login</h4>
+            </div>
+
+            <h3>-- User Details --</h3>
+
+            <div>
+                <p><strong>Name: </strong>@Model.Item.Name</p>
+            </div>
+            <div>
+                <p><strong>Location: </strong>@Model.Item.Location</p>
+            </div>
+            <div>
+                <p><strong>Avatar: </strong></p>
+                <img src="@Model.Item.AvatarUrl" alt="avatar" width="200" height="200" />
+            </div>
+
+            <h3>-- Repositories --</h3>
+
+            if (Model.Item.Repos != null)
+            {
+                <table style="width: 100%">
+                    <thead>
+                        <tr>
+                            <td>
+                                <div>
+                                    <strong>Name</strong>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <strong>Full Name</strong>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <strong>Description</strong>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <strong>Stargazers</strong>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <strong>Repo URL</strong>
+                                </div>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (GitHubSearch.ApplicationCore.Models.GitHubRepo repo in Model.Item.Repos)
+                        {
+                            <tr>
+                                <td>
+                                    <div>
+                                        <a href="@repo.HtmlUrl">@repo.Name</a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        @repo.FullName
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        @repo.Description
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        @repo.StargazersCount
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        @repo.HtmlUrl
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="col-xs-12" style="padding: 10px;">
+                    <span class="alert-warning" style="padding: 10px;">
+                        This user has no repositorys.
+                    </span>
+                </div>
+            }
+        }
+        else
+        {
+            if (Model.Status == GitHubSearch.ApplicationCore.Enums.StatusCode.Error)
+            {
+                <div class="col-xs-12" style="padding: 10px;">
+                    <span class="alert-danger"  style="padding: 10px;">
+                        @Model.Message
+                    </span>
+                </div>
+            }
+            else
+            {
+                <div class="col-xs-12" style="padding: 10px;">
+                    <span class="alert-warning" style="padding: 10px;">
+                        @Model.Message
+                    </span>
+                </div>
+            }
+
+        }
+
+    }
+
+</div>
