@@ -4,12 +4,15 @@ using GitHubSearch.ApplicationCore.Models;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GitHubSearch.ApplicationCore.Services
 {
     public class GitHubMemberSearchService : IGitHubMemberSearchService
     {
+        private const string _gitHubUrl = "https://github.com";
+
         private readonly IApiHandler _apiHandler;
         private readonly IGitHubSearchRequestBuilder _requestBuilder;
         private readonly IApiHelper _apiHelper;
@@ -47,9 +50,9 @@ namespace GitHubSearch.ApplicationCore.Services
                     Request = _requestBuilder.BuildGitHubSearchRequest()
                 };
 
-                // to do log calling $"Calling:- '{config.EndPoint}'. Request:- {config.Request.ToJson()}"
+                // log calling $"Calling:- '{config.EndPoint}'. Request:- {config.Request.ToJson()}"
                 IRestResponse response = await _apiHandler.GetResponseFromApi(config).ConfigureAwait(false);
-                // to do log status $"Call:- '{config.EndPoint}'. Response:- {response.StatusCode}"
+                // log status $"Call:- '{config.EndPoint}'. Response:- {response.StatusCode}"
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -62,19 +65,23 @@ namespace GitHubSearch.ApplicationCore.Services
                 // parse response to model
                 GitHubUser user = _apiHelper.DeserializeObject<GitHubUser>(response.Content);
 
-                // to do log success
+                // get follower/following url https://github.com/lukecbt?tab=following
+                user.FollowersHtmlUrl = GetFollowersHtmlUrl(username);
+                user.FollowingHtmlUrl = GetFollowingHtmlUrl(username);
+
+                // log success
                 result.Status = StatusCode.OK;
                 result.Item = user;
                 return result;
             }
             catch (Exception ex)
             {
-                // to do log ex
+                // log ex
                 throw;
             }
         }
 
-        public async Task<GenericResult<GitHubRepo>> GetGitHubUserReposByUsername(string username)
+        public async Task<GenericResult<GitHubRepo>> GetGitHubUserReposByUsername(string username, uint countToTake = 0)
         {
             var result = new GenericResult<GitHubRepo>();
             try
@@ -104,7 +111,12 @@ namespace GitHubSearch.ApplicationCore.Services
                 }
 
                 // parse response to model
-                IEnumerable<GitHubRepo> repos = _apiHelper.DeserializeObject<IEnumerable<GitHubRepo>>(response.Content);
+                IEnumerable<GitHubRepo> repos = _apiHelper.DeserializeObject<IEnumerable<GitHubRepo>>(response.Content).OrderByDescending(x => x.StargazersCount);
+
+                if (!countToTake.Equals(0))
+                {
+                    repos = repos.Take((int)countToTake);
+                }
 
                 // to do log success
                 result.Status = StatusCode.OK;
@@ -117,5 +129,17 @@ namespace GitHubSearch.ApplicationCore.Services
                 throw;
             }
         }
+
+        #region Helpers
+        private string GetFollowersHtmlUrl(string username)
+        {
+            return string.Format("{0}/{1}?tab=followers", _gitHubUrl, username);
+        }
+
+        private string GetFollowingHtmlUrl(string username)
+        {
+            return string.Format("{0}/{1}?tab=following", _gitHubUrl, username);
+        }
+        #endregion
     }
 }

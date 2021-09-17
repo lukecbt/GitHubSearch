@@ -3,7 +3,6 @@ using GitHubSearch.ApplicationCore.Interfaces;
 using GitHubSearch.ApplicationCore.Models;
 using GitHubSearch.ApplicationCore.Services;
 using GitHubSearch.Models;
-using System;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -38,8 +37,10 @@ namespace GitHubSearch.Controllers
                 try
                 {
                     result = await _githubMemberSearchService.GetGitHubUserByUsername(model.Username);
+                    var repoResult = await _githubMemberSearchService.GetGitHubUserReposByUsername(model.Username);
+                    result.Item.Repos = repoResult.Items;
                 }
-                catch(Exception ex)
+                catch
                 {
                     result.Status = StatusCode.Error;
                     result.Message = "An error has occurred.";

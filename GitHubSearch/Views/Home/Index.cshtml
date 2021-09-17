@@ -3,7 +3,7 @@
 }
 
 <div class="jumbotron">
-    <h1 class="text-center" style="color: teal">Github Search</h1>
+    <h1 class="text-center" style="color: teal">GitHub Search</h1>
     <p class="lead">This project is a Github search portal which uses the MVC pattern using ASP.NET and C#. I opted for a clean architecture for this project. Unit tests have also been added which include Moq as my mocking framework of choice.</p>
     <p class="lead">Type in any Github username to access their basic account info and get a list of their top repositories based on stargazers.</p>
     <p class="lead">This is an ongoing project with a few things in the works such as:-</p>
@@ -22,126 +22,170 @@
         @Html.Action("RenderForm")
     </div>
 
-    @if (Convert.ToBoolean(TempData["Submitted"]))
-    {
-        @model GitHubSearch.ApplicationCore.Models.GenericResult<GitHubSearch.ApplicationCore.Models.GitHubUser>
-        if (Model.Item != null)
+    <div class="col-xs-12">
+        @if (Convert.ToBoolean(TempData["Submitted"]))
         {
-            <div style="text-align:center;">
-                <h4>Searching user: @Model.Item.Login</h4>
-            </div>
-
-            <h3>-- User Details --</h3>
-
-            <div>
-                <p><strong>Name: </strong>@Model.Item.Name</p>
-            </div>
-            <div>
-                <p><strong>Location: </strong>@Model.Item.Location</p>
-            </div>
-            <div>
-                <p><strong>Avatar: </strong></p>
-                <img src="@Model.Item.AvatarUrl" alt="avatar" width="200" height="200" />
-            </div>
-
-            <h3>-- Repositories --</h3>
-
-            if (Model.Item.Repos != null)
+            @model GitHubSearch.ApplicationCore.Models.GenericResult<GitHubSearch.ApplicationCore.Models.GitHubUser>
+            if (Model.Item != null)
             {
-                <table style="width: 100%">
-                    <thead>
-                        <tr>
-                            <td>
-                                <div>
-                                    <strong>Name</strong>
+                <div class="row" style="text-align:center;">
+                    <h4 style="color: teal;">Searching user: <em>@Model.Item.Login</em></h4>
+                </div>
+
+                <div class="github-user">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h2>User Details</h2>
                                 </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <strong>Full Name</strong>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-xs-12 col-md-4">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="github-profile-img"><img src="@Model.Item.AvatarUrl" alt="avatar" width="300" height="300" /></div>
+                                        </div>
+                                    </div>
+                                    @if (!string.IsNullOrWhiteSpace(Model.Item.Name))
+                                    {
+                                        <div class="github-info-header">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="github-title"><span>@Model.Item.Name</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="github-sub-title"><span>@Model.Item.Login</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="github-info-header">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="github-title"><span>@Model.Item.Login</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if (!string.IsNullOrWhiteSpace(Model.Item.Bio))
+                                    {
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="github-info-content"><span>@Model.Item.Bio</span></div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="github-info-content"><a href="@Model.Item.HtmlUrl" target="_blank" class="btn btn-default btn-lg text-center github-btn">View on GitHub</a></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="github-info-content github-info-footer"><a href="@Model.Item.FollowersHtmlUrl" target="_blank" class="github-link"><i class="fas fa-users github-icon"></i> @Model.Item.Followers follower(s)</a> &bull; <a href="@Model.Item.FollowingHtmlUrl" target="_blank" class="github-link">@Model.Item.Following following</a></div>
+                                        </div>
+                                    </div>
+
+                                    @if (!string.IsNullOrWhiteSpace(Model.Item.Location))
+                                    {
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="github-info-footer"><i class="fas fa-map-marker-alt github-icon"></i> <span>@Model.Item.Location</span></div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if (!string.IsNullOrWhiteSpace(Model.Item.Blog))
+                                    {
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="github-info-footer"><i class="fas fa-link github-icon"></i> <span>@Model.Item.Blog</span></div>
+                                            </div>
+                                        </div>
+                                    }
+
                                 </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <strong>Description</strong>
+
+                                <div class="col-xs-12 col-md-8">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <h2>Repositories</h2>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    @if (Model.Item.Repos != null)
+                                    {
+                                        foreach (GitHubSearch.ApplicationCore.Models.GitHubRepo repo in Model.Item.Repos)
+                                        {
+                                            <div class="row">
+                                                <div class="col-xs-12 github-repo-card">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <div class="github-info-content">
+                                                                <a href="@repo.HtmlUrl" target="_blank">@repo.Name</a>
+                                                                <span class="pull-right"><i class="far fa-star github-icon" title="Stargazers"></i> @repo.StargazersCount</span>
+                                                            </div>
+                                                            <div class="github-info-content github-repo-description">
+                                                                <span>@repo.Description</span>
+                                                            </div>
+                                                            <div class="github-repo-description">
+                                                                <span><i class="fas fa-code github-icon"></i> @repo.Language</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                This user has no repositories to display.
+                                            </div>
+                                        </div>
+
+                                    }
+
                                 </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <strong>Stargazers</strong>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <strong>Repo URL</strong>
-                                </div>
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (GitHubSearch.ApplicationCore.Models.GitHubRepo repo in Model.Item.Repos)
-                        {
-                            <tr>
-                                <td>
-                                    <div>
-                                        <a href="@repo.HtmlUrl">@repo.Name</a>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        @repo.FullName
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        @repo.Description
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        @repo.StargazersCount
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        @repo.HtmlUrl
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             }
             else
             {
-                <div class="col-xs-12" style="padding: 10px;">
-                    <span class="alert-warning" style="padding: 10px;">
-                        This user has no repositorys.
-                    </span>
-                </div>
-            }
-        }
-        else
-        {
-            if (Model.Status == GitHubSearch.ApplicationCore.Enums.StatusCode.Error)
-            {
-                <div class="col-xs-12" style="padding: 10px;">
-                    <span class="alert-danger"  style="padding: 10px;">
-                        @Model.Message
-                    </span>
-                </div>
-            }
-            else
-            {
-                <div class="col-xs-12" style="padding: 10px;">
-                    <span class="alert-warning" style="padding: 10px;">
-                        @Model.Message
-                    </span>
-                </div>
+                if (Model.Status == GitHubSearch.ApplicationCore.Enums.StatusCode.Error)
+                {
+                    <div class="col-xs-12" style="padding: 10px;">
+                        <span class="alert-danger" style="padding: 10px;">
+                            @Model.Message
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-xs-12" style="padding: 10px;">
+                        <span class="alert-warning" style="padding: 10px;">
+                            @Model.Message
+                        </span>
+                    </div>
+                }
+
             }
 
         }
-
-    }
+    </div>
 
 </div>

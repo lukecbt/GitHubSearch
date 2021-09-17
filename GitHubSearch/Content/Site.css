@@ -2,6 +2,7 @@
     padding-top: 50px;
     padding-bottom: 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -22,4 +23,77 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+.searching-tag {
+
+}
+
+.github-user {
+    font-size: 16px;
+}
+
+.github-profile-img {
+    margin-bottom: 20px;
+}
+
+    .github-profile-img img {
+        width: 300px;
+        height: auto;
+        border-radius: 50%;
+        box-shadow: 1px 1px 5px rgb(0 0 0 / 18%), 0px 1px 1px rgb(0 0 0 / 15%);
+        -webkit-box-shadow: 1px 1px 5px rgb(0 0 0 / 18%), 0px 1px 1px rgb(0 0 0 / 15%);
+        -moz-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.18), 0px 1px 1px rgba(0, 0, 0, 0.15);
+    }
+
+    .github-link {
+        color: unset;
+    }
+
+.github-link:hover {
+    color: teal;
+}
+
+.github-info-header {
+    margin-bottom: 20px;
+}
+
+.github-title {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.github-sub-title {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: normal;
+}
+
+.github-info-content {
+    margin-bottom: 20px;
+}
+
+.github-btn {
+    font-weight: bold;
+    width: 100%;
+}
+
+.github-info-footer {
+    font-size: 14px;
+}
+
+.github-repo-card {
+    border: teal 0.5px solid;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.github-repo-description {
+    font-size: 12px;
+}
+
+.github-icon {
+    width: 20px;
+    margin-right: 5px;
 }
